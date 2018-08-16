@@ -1,0 +1,21 @@
+#example script to clean CSV with blank column values
+
+#import pandas
+import pandas as pd
+
+#read in CSV into pandas dataframe.  Replace with file name
+file = pd.read_csv('file.csv')
+
+#get shape of dataframe
+fileshape = file.shape
+print(fileshape)
+
+#identify number of blank columns.  replace col with column name
+blank = file['col'].isnull().sum()
+print(blank)
+
+#drop rows with blank value in a column
+cleanFile = file.dropna()
+
+#save file 
+cleanFile.to_csv('cleanFile.csv',index=False)
