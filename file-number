@@ -1,0 +1,13 @@
+#Identifies number of files in a directory.  Used to size loop to uplaod files
+
+import fnmatch
+import os
+
+#local directory path.  replace with appropriate path
+dirpath='/home/dspeck/attention3'
+
+#print len(fnmatch.filter(os.listdir(dirpath), '*.txt'))
+
+#identifies how many files are in a directory.  Replace txt with appropriate extension
+numfiles = len(fnmatch.filter(os.listdir(dirpath), '*.txt'))
+print(numfiles)
