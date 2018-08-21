@@ -1,0 +1,51 @@
+#imports google cloud storage libray to upload to gcs bucket
+from google.cloud import storage
+
+import glob
+import os
+from os import listdir
+ 
+ #defines variables for gcs_upload function
+bucket='api-video-2'
+project='planar-maxim-189715'
+#content_type = 'product/hdf5'
+content_type = 'product/txt'
+
+def gcs_upload(bucket, source_file, dest_file, project,content_type):
+    """
+    Upload a file from local file system to cloud storage bucket
+    :param bucket: name of bucket
+    :param source_file: blob name
+    :param dest_file: file to save as locally
+    :return:
+    """
+    client = storage.Client(project=project)
+    bucket = client.bucket(bucket)
+    blob = bucket.blob(source_file)
+    try:
+        blob.upload_from_filename(dest_file, content_type=content_type)
+    except Exception as e:
+        #logger.error(e)
+        return False
+
+#local directory path.  replace with appropriate path
+dirpath='/home/dspeck/attention3'
+
+#Alternative way to identify files in directory.  Commented out
+#files = list(glob.glob(os.path.join(dirpath,'*.txt*')))
+
+#defines variables to be used in file directory traversal and upload
+files_dir = listdir(dirpath)
+newlist = []
+i=0
+
+#identifies files in directory and uploads
+for names in files_dir:
+    if names.endswith(".txt"):
+        newlist.append(names)
+        source_file = newlist[i]
+        dest_file = newlist[i]
+        gcs_upload(bucket, source_file,dest_file,project,content_type)
+        i = i + 1
+     
+print newlist
